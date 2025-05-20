@@ -1,11 +1,11 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace TimoDeWinter\FilamentMonacoEditor;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class FilamentMonacoEditorServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -15,9 +15,9 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('filament-monaco-editor')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_migration_table_name_table');
+            ->hasMigration('create_filament_monaco_editor_table');
     }
 }

@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "timo-de-winter/filament-monaco-editor",
+    "description": "A package to implement the monaco editor into a filament project",
     "keywords": [
-        ":vendor_name",
+        "TimoDeWinter",
         "laravel",
-        ":package_slug"
+        "filament-monaco-editor"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/timo-de-winter/filament-monaco-editor",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Timo de Winter",
+            "email": "info@timodw.nl",
             "role": "Developer"
         }
     ],
@@ -35,13 +35,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "TimoDeWinter\\FilamentMonacoEditor\\": "src/",
+            "TimoDeWinter\\FilamentMonacoEditor\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "TimoDeWinter\\FilamentMonacoEditor\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -63,10 +63,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "TimoDeWinter\\FilamentMonacoEditor\\FilamentMonacoEditorServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "FilamentMonacoEditor": "TimoDeWinter\\FilamentMonacoEditor\\Facades\\FilamentMonacoEditor"
             }
         }
     },
