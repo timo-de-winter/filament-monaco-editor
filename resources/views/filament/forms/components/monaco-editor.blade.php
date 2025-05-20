@@ -11,7 +11,8 @@
                 state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
                 updateUsing: (newState) => {
                     state = newState;
-                }
+                },
+                language: @js($getLanguage())
             })"
             wire:ignore
         >

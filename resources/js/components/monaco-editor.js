@@ -33,6 +33,7 @@ import * as monaco from 'monaco-editor';
 export default function monacoEditor({
     state,
     updateUsing,
+    language,
 }) {
     return {
         state,
@@ -40,7 +41,7 @@ export default function monacoEditor({
         init: () => {
             const editor = monaco.editor.create(this.$el.querySelector('#monaco-editor'), {
                 value: state.initialValue,
-                language: 'javascript', // todo: get language from editor
+                language: language,
             });
 
             editor.getModel().onDidChangeContent(event => {
