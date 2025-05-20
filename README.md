@@ -1,11 +1,11 @@
-# A package to implement the monaco editor into a filament project
+# Filament Monaco Editor
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/timo-de-winter/filament-monaco-editor.svg?style=flat-square)](https://packagist.org/packages/timo-de-winter/filament-monaco-editor)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/timo-de-winter/filament-monaco-editor/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/timo-de-winter/filament-monaco-editor/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/timo-de-winter/filament-monaco-editor/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/timo-de-winter/filament-monaco-editor/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/timo-de-winter/filament-monaco-editor.svg?style=flat-square)](https://packagist.org/packages/timo-de-winter/filament-monaco-editor)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A package to implement the monaco editor into a filament project. Including a morphable model to relate code to any model.
 ## Installation
 
 You can install the package via composer:
