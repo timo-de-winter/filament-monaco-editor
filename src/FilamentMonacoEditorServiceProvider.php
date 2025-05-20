@@ -23,7 +23,7 @@ class FilamentMonacoEditorServiceProvider extends PackageServiceProvider
     {
         FilamentAsset::register([
             Css::make('monaco-editor-css', __DIR__.'/../resources/js/dist/components/monaco-editor.css')->loadedOnRequest(),
-            AlpineComponent::make('monaco-editor', __DIR__.'/../resources/js/dist/components/monaco-editor.js')
+            AlpineComponent::make('monaco-editor', __DIR__.'/../resources/js/dist/components/monaco-editor.js'),
         ], package: 'timo-de-winter/filament-monaco-editor');
     }
 }
