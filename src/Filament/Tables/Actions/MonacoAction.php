@@ -56,7 +56,10 @@ class MonacoAction extends Action
 
                 $editorCode = $record->editorCodes()->firstWhere('collection', $collection) ?? $record->editorCodes()->make(['collection' => $collection]);
 
-                $editorCode->code = $data['code'];
+                $editorCode->fill([
+                    'code' => $data['code'],
+                ]);
+                
                 $editorCode->save();
 
                 return $editorCode;
