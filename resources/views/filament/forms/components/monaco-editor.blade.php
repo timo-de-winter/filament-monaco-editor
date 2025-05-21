@@ -16,7 +16,7 @@
             })"
             wire:ignore
         >
-            <div id="monaco-editor" style="min-height: 400px;"></div>
+            <div id="monaco-editor" style="min-height: {{ $getHeight() }}"></div>
         </div>
     </div>
 
