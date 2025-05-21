@@ -7,5 +7,5 @@ return [
 
     'notifications' => [
         'code_saved' => 'Code has been saved successfully!',
-    ]
+    ],
 ];

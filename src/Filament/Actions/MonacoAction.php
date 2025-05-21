@@ -13,8 +13,8 @@ use TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor;
 class MonacoAction extends Action
 {
     use CanCustomizeProcess;
-    use CanHaveLanguage;
     use CanHaveCollection;
+    use CanHaveLanguage;
 
     public static function getDefaultName(): ?string
     {
@@ -38,13 +38,13 @@ class MonacoAction extends Action
             return $editorCode->attributesToArray();
         });
 
-        $this->form(fn() => [
+        $this->form(fn () => [
             MonacoEditor::make('code')
                 ->hiddenLabel()
                 ->language($this->getLanguage()),
         ]);
 
-        $this->collection(fn() => $this->getLanguage());
+        $this->collection(fn () => $this->getLanguage());
 
         $this->successNotificationTitle(__('filament-monaco-editor::monaco-editor.notifications.code_saved'));
 
