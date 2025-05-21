@@ -2,7 +2,6 @@
 
 namespace TimoDeWinter\FilamentMonacoEditor\Assets;
 
-
 use Filament\Support\Assets\Js;
 
 class Ttf extends Js
@@ -21,6 +20,6 @@ class Ttf extends Js
 
     public function getSrc(): string
     {
-        return asset($this->getRelativePublicPath()) . '?v=' . $this->getVersion();
+        return asset($this->getRelativePublicPath()).'?v='.$this->getVersion();
     }
 }
