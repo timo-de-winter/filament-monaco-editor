@@ -38,6 +38,7 @@ php artisan vendor:publish --tag="filament-monaco-editor-views"
 ```
 
 ## Usage
+You can use the monaco editor directly in a form.
 ```php
 public static function form(Form $form): Form
 {
@@ -46,6 +47,52 @@ public static function form(Form $form): Form
             ->language('php')
             ->height('500px'),
     ]);
+}
+```
+
+### Use as action
+The package also comes with an action that you can add to your resources or pages.
+
+In order to do this you should first add the following interface and trait to the model you want to use this on.
+```php
+class YourModel extends Model implements \TimoDeWinter\FilamentMonacoEditor\Contracts\HasMonacoEditor
+{
+    use \TimoDeWinter\FilamentMonacoEditor\Concerns\InteractsWithMonacoEditor;
+}
+```
+
+After doing that you can use both a table action and a default action.
+```php
+protected function getHeaderActions(): array
+{
+    return [
+        \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::make()
+            ->language('php'),
+    ];
+}
+
+// Table action
+->actions([
+    MonacoAction::make()
+        ->language('php'),
+])
+```
+
+By default, the code will be stored in the database under a specific collection. When not explicitly setting a collection we fall back to the language you use for the editor.
+However, you can explicitly set the collection as well (for example when you want to add the same language twice on the same model):
+```php
+protected function getHeaderActions(): array
+{
+    return [
+        \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::make()
+            ->collection('client-side-code')
+            ->label('Client side code')
+            ->language('php'),
+        \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::make()
+            ->collection('admin-side-code')
+            ->label('Admin side code')
+            ->language('php'),
+    ];
 }
 ```
 
