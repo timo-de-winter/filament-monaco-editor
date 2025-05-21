@@ -1,34 +1,31 @@
 import * as monaco from 'monaco-editor';
 
-// self.MonacoEnvironment = {
-//     getWorker: function (workerId, label) {
-//         const getWorkerModule = (moduleUrl, label) => {
-//             return new Worker(self.MonacoEnvironment.getWorkerUrl(moduleUrl), {
-//                 name: label,
-//                 type: 'module'
-//             });
-//         };
-//
-//         switch (label) {
-//             case 'json':
-//                 return getWorkerModule('/monaco-editor/esm/vs/language/json/json.worker?worker', label);
-//             case 'css':
-//             case 'scss':
-//             case 'less':
-//                 return getWorkerModule('/monaco-editor/esm/vs/language/css/css.worker?worker', label);
-//             case 'html':
-//             case 'blade':
-//             case 'handlebars':
-//             case 'razor':
-//                 return getWorkerModule('/monaco-editor/esm/vs/language/html/html.worker?worker', label);
-//             case 'typescript':
-//             case 'javascript':
-//                 return getWorkerModule('/monaco-editor/esm/vs/language/typescript/ts.worker?worker', label);
-//             default:
-//                 return getWorkerModule('/monaco-editor/esm/vs/editor/editor.worker?worker', label);
-//         }
-//     }
-// };
+if (window.MonacoEnvironment === undefined) {
+    window.MonacoEnvironment = {
+        getWorkerUrl: function (moduleId, label) {
+            console.log(2, label);
+
+            switch (label) {
+                case 'json':
+                    return '/js/timo-de-winter/filament-monaco-editor/monaco-worker-json.js';
+                case 'css':
+                case 'less':
+                case 'scss':
+                    return '/js/timo-de-winter/filament-monaco-editor/monaco-worker-css.js';
+                case 'html':
+                case 'handlebars':
+                case 'razor':
+                    return '/js/timo-de-winter/filament-monaco-editor/monaco-worker-html.js';
+                case 'typescript':
+                case 'javascript':
+                    return '/js/timo-de-winter/filament-monaco-editor/monaco-worker-ts.js';
+                default:
+                    // This is the default editor worker, essential for basic editor functionality
+                    return '/js/timo-de-winter/filament-monaco-editor/monaco-worker-editor.js';
+            }
+        }
+    };
+}
 
 export default function monacoEditor({
     state,
@@ -39,8 +36,10 @@ export default function monacoEditor({
         state,
 
         init: () => {
+            console.log(1, language);
+
             const editor = monaco.editor.create(this.$el.querySelector('#monaco-editor'), {
-                value: state.initialValue,
+                value: state.initialValue, // Assuming state.initialValue is available
                 language: language,
             });
 
@@ -49,6 +48,7 @@ export default function monacoEditor({
             });
 
             this.$watch('state', newState => {
+                // Prevent infinite loop if the state update comes from the editor itself
                 if (newState !== editor.getModel().getValue()) {
                     editor.getModel().setValue(newState);
                 }
@@ -56,8 +56,3 @@ export default function monacoEditor({
         },
     }
 }
-
-
-
-
-
