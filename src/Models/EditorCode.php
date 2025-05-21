@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class EditorCode extends Model
 {
-    public function getTable()
+    public function getTable(): string
     {
         return config('filament-monaco-editor.table');
     }

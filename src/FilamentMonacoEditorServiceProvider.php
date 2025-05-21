@@ -18,6 +18,7 @@ class FilamentMonacoEditorServiceProvider extends PackageServiceProvider
             ->name('filament-monaco-editor')
             ->hasConfigFile()
             ->hasViews()
+            ->hasTranslations()
             ->hasMigration('create_filament_monaco_editor_tables');
     }
 
