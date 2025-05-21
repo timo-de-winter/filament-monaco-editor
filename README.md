@@ -6,6 +6,8 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/timo-de-winter/filament-monaco-editor.svg?style=flat-square)](https://packagist.org/packages/timo-de-winter/filament-monaco-editor)
 
 A package to implement the monaco editor into a filament project. Including a morphable model to relate code to any model.
+Obviously, you can use only the editor without publishing and running the migrations for the morphable model.
+
 ## Installation
 
 You can install the package via composer:
@@ -37,20 +39,20 @@ php artisan vendor:publish --tag="filament-monaco-editor-views"
 
 ## Usage
 ```php
-$filamentMonacoEditor = new TimoDeWinter\FilamentMonacoEditor();
-echo $filamentMonacoEditor->echoPhrase('Hello, TimoDeWinter!');
+public static function form(Form $form): Form
+{
+    return $form->schema([
+        \TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor::make('code')
+            ->language('php')
+            ->height('500px'),
+    ]);
+}
 ```
 
 ## Testing
 ```bash
 composer test
 ```
-
-## Changelog
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Security Vulnerabilities
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Credits
 - [Timo de Winter](https://github.com/timo-de-winter)

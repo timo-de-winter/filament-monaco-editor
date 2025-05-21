@@ -3,10 +3,12 @@
 namespace TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components;
 
 use Filament\Forms\Components\Field;
+use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveHeight;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
 
 class MonacoEditor extends Field
 {
+    use CanHaveHeight;
     use CanHaveLanguage;
 
     // @phpstan-ignore-next-line
