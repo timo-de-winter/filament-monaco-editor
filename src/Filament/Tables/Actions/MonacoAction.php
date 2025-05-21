@@ -59,7 +59,7 @@ class MonacoAction extends Action
                 $editorCode->fill([
                     'code' => $data['code'],
                 ]);
-                
+
                 $editorCode->save();
 
                 return $editorCode;
