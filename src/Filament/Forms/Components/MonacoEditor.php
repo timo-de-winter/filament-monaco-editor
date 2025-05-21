@@ -8,8 +8,8 @@ use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
 
 class MonacoEditor extends Field
 {
-    use CanHaveLanguage;
     use CanHaveHeight;
+    use CanHaveLanguage;
 
     // @phpstan-ignore-next-line
     protected string $view = 'filament-monaco-editor::filament.forms.components.monaco-editor';
