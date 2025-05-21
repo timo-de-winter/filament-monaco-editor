@@ -6,14 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('filament_monaco_editor_table', function (Blueprint $table) {
+        Schema::create(config('filament-monaco-editor.table'), function (Blueprint $table) {
             $table->id();
-
-            // add fields
-
+            $table->morphs('model');
+            $table->longText('code');
+            $table->string('collection');
             $table->timestamps();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists(config('filament-monaco-editor.table'));
     }
 };
