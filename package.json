@@ -1,0 +1,12 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "node bin/build.js",
+        "watch": "node bin/build.js --dev"
+    },
+    "devDependencies": {
+        "esbuild": "^0.25.4",
+        "monaco-editor": "^0.52.2"
+    }
+}
