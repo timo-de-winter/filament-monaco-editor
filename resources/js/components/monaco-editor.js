@@ -3,8 +3,6 @@ import * as monaco from 'monaco-editor';
 if (window.MonacoEnvironment === undefined) {
     window.MonacoEnvironment = {
         getWorkerUrl: function (moduleId, label) {
-            console.log(2, label);
-
             switch (label) {
                 case 'json':
                     return '/js/timo-de-winter/filament-monaco-editor/monaco-worker-json.js';
@@ -36,8 +34,6 @@ export default function monacoEditor({
         state,
 
         init: () => {
-            console.log(1, language);
-
             const editor = monaco.editor.create(this.$el.querySelector('#monaco-editor'), {
                 value: state.initialValue, // Assuming state.initialValue is available
                 language: language,

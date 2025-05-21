@@ -23,15 +23,25 @@ class FilamentMonacoEditorServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         FilamentAsset::register([
-            Css::make('monaco-editor-css', __DIR__.'/../resources/js/dist/components/monaco-editor.css')->loadedOnRequest(),
-            AlpineComponent::make('monaco-editor', __DIR__.'/../resources/js/dist/components/monaco-editor.js'),
+            Css::make('monaco-editor-css', __DIR__.'/../resources/js/dist/monaco-editor.css')->loadedOnRequest(),
+            AlpineComponent::make('monaco-editor', __DIR__.'/../resources/js/dist/monaco-editor.js'),
 
             // Monaco workers
-            Js::make('monaco-worker-css', __DIR__.'/../resources/js/dist/monaco-workers/css.worker.js')->module(),
-            Js::make('monaco-worker-editor', __DIR__.'/../resources/js/dist/monaco-workers/editor.worker.js')->module(),
-            Js::make('monaco-worker-html', __DIR__.'/../resources/js/dist/monaco-workers/html.worker.js')->module(),
-            Js::make('monaco-worker-json', __DIR__.'/../resources/js/dist/monaco-workers/json.worker.js')->module(),
-            Js::make('monaco-worker-ts', __DIR__.'/../resources/js/dist/monaco-workers/ts.worker.js')->module(),
+            Js::make('monaco-worker-css', __DIR__.'/../resources/js/dist/monaco-worker-css.js')
+                ->loadedOnRequest()
+                ->module(),
+            Js::make('monaco-worker-editor', __DIR__.'/../resources/js/dist/monaco-worker-editor.js')
+                ->loadedOnRequest()
+                ->module(),
+            Js::make('monaco-worker-html', __DIR__.'/../resources/js/dist/monaco-worker-html.js')
+                ->loadedOnRequest()
+                ->module(),
+            Js::make('monaco-worker-json', __DIR__.'/../resources/js/dist/monaco-worker-json.js')
+                ->loadedOnRequest()
+                ->module(),
+            Js::make('monaco-worker-ts', __DIR__.'/../resources/js/dist/monaco-worker-ts.js')
+                ->loadedOnRequest()
+                ->module(),
         ], package: 'timo-de-winter/filament-monaco-editor');
     }
 }

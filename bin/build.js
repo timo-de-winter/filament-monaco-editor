@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild'
+import path from 'path' // Ensure path is imported if you use path.join
 
 const isDev = process.argv.includes('--dev')
 
@@ -13,6 +14,9 @@ async function compile(options) {
     }
 }
 
+// Define a SINGLE base output directory for all assets
+const baseDistDir = './resources/js/dist'; // All generated files will go here
+
 const defaultOptions = {
     define: {
         'process.env.NODE_ENV': isDev ? `'development'` : `'production'`,
@@ -26,8 +30,12 @@ const defaultOptions = {
     target: ['es2020'],
     minify: !isDev,
     loader: {
-        '.ttf': 'file',
+        '.ttf': 'file', // esbuild will copy .ttf files
+        '.css': 'css',  // Ensure CSS files are handled (important for Monaco's internal CSS)
     },
+    // Set publicPath to the public URL of the baseDistDir
+    publicPath: '/js/dist/',
+    assetNames: '[name]',
     plugins: [{
         name: 'watchPlugin',
         setup: function (build) {
@@ -50,22 +58,22 @@ const defaultOptions = {
 compile({
     ...defaultOptions,
     entryPoints: ['./resources/js/components/monaco-editor.js'],
-    outfile: './resources/js/dist/components/monaco-editor.js',
+    // Use outdir and specify the output filename within that directory
+    outdir: baseDistDir,
+    entryNames: '[dir]/[name]', // This will create `components/monaco-editor.js` within baseDistDir based on the input path
 })
 
 // Monaco Editor Web Workers bundles
-// You'll need to adjust the output directory (`./resources/js/dist/monaco-workers/`)
-// to where your web server will serve these files.
-const monacoWorkersOutdir = './resources/js/dist/monaco-workers';
-
 compile({
     ...defaultOptions,
     entryPoints: {
-        'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
-        'json.worker': 'monaco-editor/esm/vs/language/json/json.worker.js',
-        'css.worker': 'monaco-editor/esm/vs/language/css/css.worker.js',
-        'html.worker': 'monaco-editor/esm/vs/language/html/html.worker.js',
-        'ts.worker': 'monaco-editor/esm/vs/language/typescript/ts.worker.js',
+        // Renaming the output files for clarity and consistency
+        'monaco-worker-editor': 'monaco-editor/esm/vs/editor/editor.worker.js',
+        'monaco-worker-json': 'monaco-editor/esm/vs/language/json/json.worker.js',
+        'monaco-worker-css': 'monaco-editor/esm/vs/language/css/css.worker.js',
+        'monaco-worker-html': 'monaco-editor/esm/vs/language/html/html.worker.js',
+        'monaco-worker-ts': 'monaco-editor/esm/vs/language/typescript/ts.worker.js',
     },
-    outdir: monacoWorkersOutdir, // Output all workers to a common directory
+    // All workers will also go into the baseDistDir
+    outdir: baseDistDir,
 })
