@@ -29,6 +29,7 @@ php artisan vendor:publish --tag="filament-monaco-editor-config"
 This is the contents of the published config file:
 ```php
 return [
+    'table' => 'editor_codes',
 ];
 ```
 
