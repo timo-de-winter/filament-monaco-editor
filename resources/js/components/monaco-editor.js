@@ -1,4 +1,5 @@
 import * as monaco from 'monaco-editor';
+import ClassWatcher from "../helpers/ClassWatcher.js";
 
 const richFeatureLanguages = [
     'json',
@@ -146,6 +147,7 @@ export default function monacoEditor({
         state,
         language,
         editorInstance: null,
+        classWatcher: null,
 
         init: async () => {
             if (basicLanguageImportPaths[language]) {
@@ -155,12 +157,15 @@ export default function monacoEditor({
             this.editorInstance = monaco.editor.create(this.$el.querySelector('#monaco-editor'), {
                 value: state.initialValue, // Assuming state.initialValue is available
                 language: language,
+                theme: document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs',
             });
 
+            // Update the state
             this.editorInstance.getModel().onDidChangeContent(event => {
                 updateUsing(this.editorInstance.getModel().getValue());
             });
 
+            // When the state is changed on some other place we set that code in the editor
             this.$watch('state', newState => {
                 // Prevent infinite loop if the state update comes from the editor itself
                 if (newState !== this.editorInstance.getModel().getValue()) {
@@ -177,6 +182,13 @@ export default function monacoEditor({
                     monaco.editor.setModelLanguage(this.editorInstance.getModel(), newLanguage);
                 }
             });
+
+            // When dark mode is changed by the user we need to change the editor theme
+            this.classWatcher = new ClassWatcher(document.documentElement, () => {
+                monaco.editor.setTheme(
+                    document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs'
+                );
+            });
         },
 
         destroy: () => {
@@ -184,6 +196,11 @@ export default function monacoEditor({
             if (this.editorInstance) {
                 this.editorInstance.dispose();
                 this.editorInstance = null;
+            }
+
+            if (this.classWatcher) {
+                this.classWatcher.destroy();
+                this.classWatcher = null;
             }
         },
     }
