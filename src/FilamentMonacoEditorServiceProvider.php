@@ -8,6 +8,7 @@ use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use TimoDeWinter\FilamentMonacoEditor\Assets\Ttf;
 
 class FilamentMonacoEditorServiceProvider extends PackageServiceProvider
 {
@@ -42,6 +43,9 @@ class FilamentMonacoEditorServiceProvider extends PackageServiceProvider
             Js::make('monaco-worker-ts', __DIR__.'/../resources/js/dist/monaco-worker-ts.js')
                 ->loadedOnRequest()
                 ->module(),
+            // We use a custom asset so that filament will publish the font as well
+            Ttf::make('codicon', __DIR__.'/../resources/js/dist/codicon.ttf')
+                ->loadedOnRequest(),
         ], package: 'timo-de-winter/filament-monaco-editor');
     }
 }

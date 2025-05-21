@@ -34,7 +34,7 @@ const defaultOptions = {
         '.css': 'css',  // Ensure CSS files are handled (important for Monaco's internal CSS)
     },
     // Set publicPath to the public URL of the baseDistDir
-    publicPath: '/js/dist/',
+    publicPath: '/js/timo-de-winter/filament-monaco-editor/',
     assetNames: '[name]',
     plugins: [{
         name: 'watchPlugin',
