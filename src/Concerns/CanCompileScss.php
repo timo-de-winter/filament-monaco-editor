@@ -16,6 +16,6 @@ trait CanCompileScss
             return null;
         }
 
-        return (new Compiler())->compileString($scss)->getCss();
+        return (new Compiler)->compileString($scss)->getCss();
     }
 }
