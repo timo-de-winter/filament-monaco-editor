@@ -170,7 +170,7 @@ export default function monacoEditor({
             this.$watch('state', newState => {
                 // Prevent infinite loop if the state update comes from the editor itself
                 if (newState !== this.editorInstance.getModel().getValue()) {
-                    this.editorInstance.getModel().setValue(newState);
+                    this.editorInstance.getModel().setValue(newState ?? '');
                 }
             });
 
