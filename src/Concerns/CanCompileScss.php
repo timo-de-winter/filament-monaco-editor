@@ -17,7 +17,7 @@ trait CanCompileScss
             return null;
         }
 
-        $compiler = new Compiler();
+        $compiler = new Compiler;
         $compiler->setOutputStyle($outputStyle);
 
         return $compiler
