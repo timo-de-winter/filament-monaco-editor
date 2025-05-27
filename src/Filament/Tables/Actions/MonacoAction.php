@@ -4,13 +4,13 @@ namespace TimoDeWinter\FilamentMonacoEditor\Filament\Tables\Actions;
 
 use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Model;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveCollection;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
-use TimoDeWinter\FilamentMonacoEditor\Contracts\HasMonacoEditor;
-use TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCollection;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCustomizationProcess;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasLanguage;
 
-class MonacoAction extends Action
+class MonacoAction extends Action implements HasCollection, HasCustomizationProcess, HasLanguage
 {
     use CanCustomizeProcess;
     use CanHaveCollection;
@@ -25,53 +25,8 @@ class MonacoAction extends Action
     {
         parent::setUp();
 
-        $this->label(__('filament-monaco-editor::monaco-editor.actions.edit_code'));
-
-        $this->fillForm(function (Model&HasMonacoEditor $record, MonacoAction $action) {
-            $collection = $action->getCollection();
-            $editorCode = $record->editorCodes()->firstWhere('collection', $collection);
-
-            if (is_null($editorCode)) {
-                return [];
-            }
-
-            return $editorCode->attributesToArray();
-        });
-
-        $this->form(fn () => [
-            MonacoEditor::make('code')
-                ->hiddenLabel()
-                ->language($this->getLanguage()),
-        ]);
-
-        $this->collection(fn () => $this->getLanguage());
-
-        $this->successNotificationTitle(__('filament-monaco-editor::monaco-editor.notifications.code_saved'));
+        \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::setUpMonacoAction($this);
 
         $this->icon('heroicon-o-code-bracket');
-
-        $this->action(function (): void {
-            $result = $this->process(static function (Model&HasMonacoEditor $record, MonacoAction $action, array $data) {
-                $collection = $action->getCollection();
-
-                $editorCode = $record->editorCodes()->firstWhere('collection', $collection) ?? $record->editorCodes()->make(['collection' => $collection]);
-
-                $editorCode->fill([
-                    'code' => $data['code'],
-                ]);
-
-                $editorCode->save();
-
-                return $editorCode;
-            });
-
-            if (! $result) {
-                $this->failure();
-
-                return;
-            }
-
-            $this->success();
-        });
     }
 }
