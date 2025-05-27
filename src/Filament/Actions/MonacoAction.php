@@ -16,7 +16,7 @@ use TimoDeWinter\FilamentMonacoEditor\Contracts\HasLanguage;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasMonacoEditor;
 use TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor;
 
-class MonacoAction extends Action implements HasCollection, HasCustomizationProcess, HasLanguage, HasDefault
+class MonacoAction extends Action implements HasCollection, HasCustomizationProcess, HasDefault, HasLanguage
 {
     use CanCustomizeProcess;
     use CanHaveCollection;
