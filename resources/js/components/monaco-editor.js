@@ -158,6 +158,7 @@ export default function monacoEditor({
                 value: state.initialValue, // Assuming state.initialValue is available
                 language: language,
                 theme: document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs',
+                automaticLayout: true,
             });
 
             // Update the state
@@ -169,7 +170,7 @@ export default function monacoEditor({
             this.$watch('state', newState => {
                 // Prevent infinite loop if the state update comes from the editor itself
                 if (newState !== this.editorInstance.getModel().getValue()) {
-                    this.editorInstance.getModel().setValue(newState);
+                    this.editorInstance.getModel().setValue(newState ?? '');
                 }
             });
 
