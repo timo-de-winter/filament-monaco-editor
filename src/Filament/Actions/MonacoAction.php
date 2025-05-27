@@ -5,27 +5,30 @@ namespace TimoDeWinter\FilamentMonacoEditor\Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Actions\MountableAction;
+use Filament\Tables\Filters\Concerns\HasDefaultState;
 use Illuminate\Database\Eloquent\Model;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveCollection;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCollection;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCustomizationProcess;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasDefault;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasLanguage;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasMonacoEditor;
 use TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor;
 
-class MonacoAction extends Action implements HasCollection, HasCustomizationProcess, HasLanguage
+class MonacoAction extends Action implements HasCollection, HasCustomizationProcess, HasLanguage, HasDefault
 {
     use CanCustomizeProcess;
     use CanHaveCollection;
     use CanHaveLanguage;
+    use HasDefaultState;
 
     public static function getDefaultName(): ?string
     {
         return 'monaco';
     }
 
-    public static function setUpMonacoAction(MountableAction&HasLanguage&HasCollection&HasCustomizationProcess $action): void
+    public static function setUpMonacoAction(MountableAction&HasLanguage&HasCollection&HasCustomizationProcess&HasDefault $action): void
     {
         $action->label(__('filament-monaco-editor::monaco-editor.actions.edit_code'));
 
@@ -34,7 +37,9 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
             $editorCode = $record->editorCodes()->firstWhere('collection', $collection);
 
             if (is_null($editorCode)) {
-                return [];
+                return [
+                    'code' => $action->getDefaultState(),
+                ];
             }
 
             return $editorCode->attributesToArray();
