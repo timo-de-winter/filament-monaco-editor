@@ -2,4 +2,9 @@
 
 namespace TimoDeWinter\FilamentMonacoEditor;
 
-class FilamentMonacoEditor {}
+use TimoDeWinter\FilamentMonacoEditor\Concerns\CanCompileScss;
+
+class FilamentMonacoEditor
+{
+    use CanCompileScss;
+}

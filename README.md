@@ -51,6 +51,15 @@ public static function form(Form $form): Form
 }
 ```
 
+### Code compilation
+This package also comes with features to compile code. At this moment we support compilation of the following:
+
+- SCSS -> CSS
+
+```php
+\TimoDeWinter\FilamentMonacoEditor\Facades\FilamentMonacoEditor::compileScssToCss('your-css');
+```
+
 ### Use as action
 The package also comes with an action that you can add to your resources or pages.
 
