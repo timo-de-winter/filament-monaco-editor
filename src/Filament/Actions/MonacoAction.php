@@ -8,10 +8,13 @@ use Filament\Actions\MountableAction;
 use Illuminate\Database\Eloquent\Model;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveCollection;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCollection;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCustomizationProcess;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasLanguage;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasMonacoEditor;
 use TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor;
 
-class MonacoAction extends Action
+class MonacoAction extends Action implements HasLanguage, HasCollection, HasCustomizationProcess
 {
     use CanCustomizeProcess;
     use CanHaveCollection;
@@ -22,7 +25,7 @@ class MonacoAction extends Action
         return 'monaco';
     }
 
-    public static function setUpMonacoAction(MountableAction $action)
+    public static function setUpMonacoAction(MountableAction&HasLanguage&HasCollection&HasCustomizationProcess $action): void
     {
         $action->label(__('filament-monaco-editor::monaco-editor.actions.edit_code'));
 

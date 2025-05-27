@@ -6,8 +6,11 @@ use Filament\Actions\Concerns\CanCustomizeProcess;
 use Filament\Tables\Actions\Action;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveCollection;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCollection;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasCustomizationProcess;
+use TimoDeWinter\FilamentMonacoEditor\Contracts\HasLanguage;
 
-class MonacoAction extends Action
+class MonacoAction extends Action implements HasLanguage, HasCollection, HasCustomizationProcess
 {
     use CanCustomizeProcess;
     use CanHaveCollection;
