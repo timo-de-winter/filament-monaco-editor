@@ -4,6 +4,7 @@ namespace TimoDeWinter\FilamentMonacoEditor\Filament\Actions;
 
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\CanCustomizeProcess;
+use Filament\Actions\MountableAction;
 use Illuminate\Database\Eloquent\Model;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveCollection;
 use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
@@ -21,13 +22,11 @@ class MonacoAction extends Action
         return 'monaco';
     }
 
-    protected function setUp(): void
+    public static function setUpMonacoAction(MountableAction $action)
     {
-        parent::setUp();
+        $action->label(__('filament-monaco-editor::monaco-editor.actions.edit_code'));
 
-        $this->label(__('filament-monaco-editor::monaco-editor.actions.edit_code'));
-
-        $this->fillForm(function (Model&HasMonacoEditor $record, MonacoAction $action) {
+        $action->fillForm(function (Model&HasMonacoEditor $record, MonacoAction $action) {
             $collection = $action->getCollection();
             $editorCode = $record->editorCodes()->firstWhere('collection', $collection);
 
@@ -38,18 +37,18 @@ class MonacoAction extends Action
             return $editorCode->attributesToArray();
         });
 
-        $this->form(fn () => [
+        $action->form(fn () => [
             MonacoEditor::make('code')
                 ->hiddenLabel()
-                ->language($this->getLanguage()),
+                ->language($action->getLanguage()),
         ]);
 
-        $this->collection(fn () => $this->getLanguage());
+        $action->collection(fn () => $action->getLanguage());
 
-        $this->successNotificationTitle(__('filament-monaco-editor::monaco-editor.notifications.code_saved'));
+        $action->successNotificationTitle(__('filament-monaco-editor::monaco-editor.notifications.code_saved'));
 
-        $this->action(function (): void {
-            $result = $this->process(static function (Model&HasMonacoEditor $record, MonacoAction $action, array $data) {
+        $action->action(function () use ($action): void {
+            $result = $action->process(static function (Model&HasMonacoEditor $record, MonacoAction $action, array $data) {
                 $collection = $action->getCollection();
 
                 $editorCode = $record->editorCodes()->firstWhere('collection', $collection) ?? $record->editorCodes()->make(['collection' => $collection]);
@@ -64,12 +63,19 @@ class MonacoAction extends Action
             });
 
             if (! $result) {
-                $this->failure();
+                $action->failure();
 
                 return;
             }
 
-            $this->success();
+            $action->success();
         });
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        self::setUpMonacoAction($this);
     }
 }
