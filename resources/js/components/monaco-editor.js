@@ -158,6 +158,7 @@ export default function monacoEditor({
                 value: state.initialValue, // Assuming state.initialValue is available
                 language: language,
                 theme: document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs',
+                automaticLayout: true,
             });
 
             // Update the state
