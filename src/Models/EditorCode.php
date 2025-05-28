@@ -12,7 +12,7 @@ class EditorCode extends Model
 {
     public function getTable(): string
     {
-        return config('filament-monaco-editor.table');
+        return config('filament-monaco-editor.table', 'editor_codes');
     }
 
     protected $fillable = [
