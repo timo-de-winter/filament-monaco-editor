@@ -12,7 +12,7 @@ class EditorCode extends Model
 {
     public function getTable(): string
     {
-        return config('filament-monaco-editor.table');
+        return config('filament-monaco-editor.table', 'editor_codes');
     }
 
     protected $fillable = [
@@ -23,7 +23,7 @@ class EditorCode extends Model
     protected static function booted(): void
     {
         static::saved(function (self $editorCode) {
-            if ($editorCode->collection === 'scss') {
+            if ($editorCode->getAttribute('collection') === 'scss') {
                 Cache::forever($editorCode->cacheKey('cached-css'), $editorCode->compileToCss());
             }
         });
@@ -53,8 +53,8 @@ class EditorCode extends Model
     public function compileToCss(): string
     {
         $scss = $this->model instanceof MutatesCodeBeforeCompilation
-            ? $this->model->getMutatedCodeForCompilation('scss', $this->code)
-            : $this->code;
+            ? $this->model->getMutatedCodeForCompilation('scss', $this->getAttribute('code'))
+            : $this->getAttribute('code');
 
         return FilamentMonacoEditor::compileScssToCss($scss);
     }
