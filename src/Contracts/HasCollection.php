@@ -8,5 +8,5 @@ interface HasCollection
 {
     public function collection(Closure|string $collection): static;
 
-    public function getCollection(): string;
+    public function getCollection(): string|array;
 }
