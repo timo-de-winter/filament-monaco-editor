@@ -11,9 +11,9 @@ use TimoDeWinter\FilamentMonacoEditor\Concerns\CanHaveLanguage;
 
 class MonacoEditor extends Field
 {
+    use CanCompileScss;
     use CanHaveHeight;
     use CanHaveLanguage;
-    use CanCompileScss;
 
     // @phpstan-ignore-next-line
     protected string $view = 'filament-monaco-editor::filament.forms.components.monaco-editor';
@@ -26,14 +26,14 @@ class MonacoEditor extends Field
         return $static
             // SCSS rule
             ->rule(fn (): Closure => function (string $attribute, $value, Closure $fail) use ($static) {
-               if ($static->getLanguage() !== 'scss') {
-                   return;
-               }
+                if ($static->getLanguage() !== 'scss') {
+                    return;
+                }
 
                 try {
                     $static->compileScssToCss($value);
                 } catch (SimpleSassFormatException) {
-                   $fail(__('filament-monaco-editor::monaco-editor.notifications.scss_failed_to_parse'));
+                    $fail(__('filament-monaco-editor::monaco-editor.notifications.scss_failed_to_parse'));
                 }
             });
     }

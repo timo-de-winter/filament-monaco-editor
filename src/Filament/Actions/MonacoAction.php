@@ -18,7 +18,6 @@ use TimoDeWinter\FilamentMonacoEditor\Contracts\HasDefault;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasLanguage;
 use TimoDeWinter\FilamentMonacoEditor\Contracts\HasMonacoEditor;
 use TimoDeWinter\FilamentMonacoEditor\Filament\Forms\Components\MonacoEditor;
-use TimoDeWinter\FilamentMonacoEditor\Models\EditorCode;
 
 class MonacoAction extends Action implements HasCollection, HasCustomizationProcess, HasDefault, HasLanguage
 {
@@ -40,8 +39,9 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
             ->fillForm(function (Model&HasMonacoEditor $record, MonacoAction $action) {
                 $collection = $action->getCollection();
 
-                if (!is_array($collection)) {
+                if (! is_array($collection)) {
                     $editorCode = $record->editorCodes()->firstWhere('collection', $collection);
+
                     return ['code' => $editorCode->code ?? $action->getDefaultState()];
                 }
 
@@ -61,7 +61,7 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
                     ->toArray();
             })
             ->form(function () use ($action) {
-                if (!is_array($collection = $action->getCollection())) {
+                if (! is_array($collection = $action->getCollection())) {
                     return [
                         MonacoEditor::make('code')
                             ->hiddenLabel()
@@ -79,7 +79,7 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
                                         ->language($language);
                                 })
                                 ->toArray()
-                        )
+                        ),
                 ];
             })
             ->collection(fn () => $action->getLanguage())
@@ -88,7 +88,7 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
                 $result = $action->process(static function (Model&HasMonacoEditor $record, MonacoAction $action, array $data) {
                     $collection = $action->getCollection();
 
-                    if (!is_array($collection)) {
+                    if (! is_array($collection)) {
                         $editorCode = $record->editorCodes()->firstWhere('collection', $collection) ?? $record->editorCodes()->make(['collection' => $collection]);
 
                         $editorCode->fill(['code' => $data['code']]);
