@@ -97,11 +97,44 @@ protected function getHeaderActions(): array
         \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::make()
             ->collection('client-side-code')
             ->label('Client side code')
-            ->language('php'),
+            ->language('javascript'),
         \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::make()
-            ->collection('admin-side-code')
-            ->label('Admin side code')
+            ->collection('server-side-code')
+            ->label('Server side code')
             ->language('php'),
+    ];
+}
+```
+
+#### Using a grid within the actions
+It is possible to use a (codepen like) grid in your actions by defining the collection as an array where key=collection and value=language.
+```php
+protected function getHeaderActions(): array
+{
+    return [
+        \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::make()
+            ->collection([
+                'client-side-code' => 'javascript',
+                'server-side-code' => 'php',
+            ]),
+    ];
+}
+```
+
+If you want to set a default state for the different collections in the grid-style action you can do so like this:
+```php
+protected function getHeaderActions(): array
+{
+    return [
+        \TimoDeWinter\FilamentMonacoEditor\Filament\Actions\MonacoAction::make()
+            ->collection([
+                'client-side-code' => 'javascript',
+                'server-side-code' => 'php',
+            ])
+            ->default([
+                'client-side-code' => 'Very cool code',
+                'server-side-code' => 'Cool PHP code',
+            ]),
     ];
 }
 ```
