@@ -49,7 +49,7 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
                     ->editorCodes()
                     ->whereIn('collection', array_keys($collection))
                     ->get()
-                    ->keyBy('collection');
+                    ->pluck('code', 'collection');
 
                 return collect($collection)
                     ->keys()
