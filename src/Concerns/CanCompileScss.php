@@ -5,6 +5,7 @@ namespace TimoDeWinter\FilamentMonacoEditor\Concerns;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use ScssPhp\ScssPhp\OutputStyle;
+use TimoDeWinter\FilamentMonacoEditor\Loggers\NoOutputLogger;
 
 trait CanCompileScss
 {
@@ -18,6 +19,7 @@ trait CanCompileScss
         }
 
         $compiler = new Compiler;
+        $compiler->setLogger(new NoOutputLogger);
         $compiler->setOutputStyle($outputStyle);
 
         return $compiler

@@ -1,6 +1,6 @@
 {
     "name": "timo-de-winter/filament-monaco-editor",
-    "version": "v1.4.1",
+    "version": "v1.4.2",
     "description": "A package to implement the monaco editor into a filament project",
     "keywords": [
         "TimoDeWinter",
