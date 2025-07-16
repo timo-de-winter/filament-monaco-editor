@@ -19,7 +19,7 @@ trait CanCompileScss
         }
 
         $compiler = new Compiler;
-        $compiler->setLogger(new NoOutputLogger());
+        $compiler->setLogger(new NoOutputLogger);
         $compiler->setOutputStyle($outputStyle);
 
         return $compiler
