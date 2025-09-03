@@ -50,7 +50,7 @@ class EditorCode extends Model
         });
     }
 
-    public function compileToCss(): string
+    public function compileToCss(): ?string
     {
         $scss = $this->model instanceof MutatesCodeBeforeCompilation
             ? $this->model->getMutatedCodeForCompilation('scss', $this->getAttribute('code'))
