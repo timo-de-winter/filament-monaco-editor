@@ -39,7 +39,7 @@ class EditorCode extends Model
         return $this->morphTo('model');
     }
 
-    public function getCompiledCss(): string
+    public function getCompiledCss(): ?string
     {
         return Cache::get($this->cacheKey('cached-css'), function () {
             $css = $this->compileToCss();
