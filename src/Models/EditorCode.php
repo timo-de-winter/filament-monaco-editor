@@ -52,6 +52,8 @@ class EditorCode extends Model
 
     public function compileToCss(): ?string
     {
+        $this->loadMissing('model');
+
         $scss = $this->model instanceof MutatesCodeBeforeCompilation
             ? $this->model->getMutatedCodeForCompilation('scss', $this->getAttribute('code'))
             : $this->getAttribute('code');
