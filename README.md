@@ -71,7 +71,7 @@ class YourModel extends Model implements \TimoDeWinter\FilamentMonacoEditor\Cont
 }
 ```
 
-After doing that you can use both a table action and a default action.
+After doing that you can use an action to open the editor.
 ```php
 protected function getHeaderActions(): array
 {

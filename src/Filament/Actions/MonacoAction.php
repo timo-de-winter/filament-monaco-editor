@@ -4,9 +4,8 @@ namespace TimoDeWinter\FilamentMonacoEditor\Filament\Actions;
 
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\CanCustomizeProcess;
-use Filament\Actions\MountableAction;
-use Filament\Forms\Components\Grid;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Schemas\Components\Grid;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Filters\Concerns\HasDefaultState;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -31,11 +30,13 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
         return 'monaco';
     }
 
-    public static function setUpMonacoAction(MountableAction&HasLanguage&HasCollection&HasCustomizationProcess&HasDefault $action): void
+    protected function setUp(): void
     {
-        $action
+        parent::setUp();
+
+        $this
             ->label(__('filament-monaco-editor::monaco-editor.actions.edit_code'))
-            ->modalWidth(MaxWidth::Full)
+            ->modalWidth(Width::Full)
             ->fillForm(function (Model&HasMonacoEditor $record, MonacoAction $action) {
                 $collection = $action->getCollection();
 
@@ -60,12 +61,12 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
                     })
                     ->toArray();
             })
-            ->form(function () use ($action) {
-                if (! is_array($collection = $action->getCollection())) {
+            ->schema(function () {
+                if (! is_array($collection = $this->getCollection())) {
                     return [
                         MonacoEditor::make('code')
                             ->hiddenLabel()
-                            ->language($action->getLanguage()),
+                            ->language($this->getLanguage()),
                     ];
                 }
 
@@ -82,10 +83,10 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
                         ),
                 ];
             })
-            ->collection(fn () => $action->getLanguage())
+            ->collection(fn () => $this->getLanguage())
             ->successNotificationTitle(__('filament-monaco-editor::monaco-editor.notifications.code_saved'))
-            ->action(function () use ($action): void {
-                $result = $action->process(static function (Model&HasMonacoEditor $record, MonacoAction $action, array $data) {
+            ->action(function (): void {
+                $result = $this->process(static function (Model&HasMonacoEditor $record, MonacoAction $action, array $data) {
                     $collection = $action->getCollection();
 
                     if (! is_array($collection)) {
@@ -118,19 +119,12 @@ class MonacoAction extends Action implements HasCollection, HasCustomizationProc
                 });
 
                 if (! $result) {
-                    $action->failure();
+                    $this->failure();
 
                     return;
                 }
 
-                $action->success();
+                $this->success();
             });
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        self::setUpMonacoAction($this);
     }
 }

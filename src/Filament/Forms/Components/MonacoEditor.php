@@ -18,7 +18,7 @@ class MonacoEditor extends Field
     // @phpstan-ignore-next-line
     protected string $view = 'filament-monaco-editor::filament.forms.components.monaco-editor';
 
-    public static function make(string $name): static
+    public static function make(?string $name = null): static
     {
         $static = app(static::class, ['name' => $name]);
         $static->configure();
