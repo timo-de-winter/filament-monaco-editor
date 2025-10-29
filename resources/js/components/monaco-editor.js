@@ -139,70 +139,93 @@ if (window.MonacoEnvironment === undefined) {
 }
 
 export default function monacoEditor({
+    key,
+    isLiveDebounced,
+    isLiveOnBlur,
+    liveDebounce,
     state,
-    updateUsing,
     language,
 }) {
+    let editor;
+    let classWatcher;
+
     return {
         state,
-        language,
-        editorInstance: null,
-        classWatcher: null,
 
-        init: async () => {
+        language,
+
+        shouldUpdateState: true,
+
+        editorUpdatedAt: Date.now(),
+
+        async init() {
             if (basicLanguageImportPaths[language]) {
                 await loadAndRegisterBasicLanguage(language);
             }
 
-            this.editorInstance = monaco.editor.create(this.$el.querySelector('#monaco-editor'), {
-                value: state.initialValue, // Assuming state.initialValue is available
+            editor = monaco.editor.create(this.$el.querySelector('#monaco-editor'), {
+                value: this.state ?? '', // Assuming state.initialValue is available
                 language: language,
                 theme: document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs',
                 automaticLayout: true,
             });
 
-            // Update the state
-            this.editorInstance.getModel().onDidChangeContent(event => {
-                updateUsing(this.editorInstance.getModel().getValue());
+            monaco.editor.onDidCreateEditor(() => {
+                this.editorUpdatedAt = Date.now();
             });
 
+            const debouncedCommit = Alpine.debounce(
+                () => this.$wire.commit(),
+                liveDebounce ?? 300,
+            );
+
+            // State updated
+            editor.getModel().onDidChangeContent(() => {
+                this.$nextTick(() => {
+                    this.editorUpdatedAt = Date.now();
+
+                    this.state = editor.getModel().getValue();
+
+                    this.shouldUpdateState = false;
+
+                    if (isLiveDebounced) {
+                        debouncedCommit();
+                    }
+                });
+            });
+
+            if (isLiveOnBlur) {
+                editor.onDidBlurEditorText(() => this.$wire.commit());
+            }
+
             // When the state is changed on some other place we set that code in the editor
-            this.$watch('state', newState => {
-                // Prevent infinite loop if the state update comes from the editor itself
-                if (newState !== this.editorInstance.getModel().getValue()) {
-                    this.editorInstance.getModel().setValue(newState ?? '');
+            this.$watch('state', () => {
+                if (!this.shouldUpdateState) {
+                    this.shouldUpdateState = true;
+
+                    return;
                 }
+
+                editor.getModel().setValue(this.state ?? '');
             });
 
             // Handle language changes after initial creation (e.g., if you have a language switcher)
             this.$watch('language', async newLanguage => {
-                if (newLanguage && this.editorInstance.getModel().getLanguageId() !== newLanguage) {
+                if (newLanguage && editor.getModel().getLanguageId() !== newLanguage) {
                     if (basicLanguageImportPaths[newLanguage]) {
                         await loadAndRegisterBasicLanguage(newLanguage);
                     }
-                    monaco.editor.setModelLanguage(this.editorInstance.getModel(), newLanguage);
+
+                    monaco.editor.setModelLanguage(editor.getModel(), newLanguage);
                 }
             });
 
             // When dark mode is changed by the user we need to change the editor theme
-            this.classWatcher = new ClassWatcher(document.documentElement, () => {
+            classWatcher = new ClassWatcher(document.documentElement, () => {
                 monaco.editor.setTheme(
                     document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs'
                 );
             });
-        },
-
-        destroy: () => {
-            // Dispose of the editor instance when the Alpine component is removed
-            if (this.editorInstance) {
-                this.editorInstance.dispose();
-                this.editorInstance = null;
-            }
-
-            if (this.classWatcher) {
-                this.classWatcher.destroy();
-                this.classWatcher = null;
-            }
         },
     }
 }
